@@ -1,0 +1,35 @@
+trigger: none
+
+pool:
+  name: abhi_agent
+
+stages:
+  - stage: terraformdestroy
+    displayName: Terraform Destroy
+
+    jobs:
+      - job: terraformdestroyjob
+        displayName: Terraform Destroy
+
+        steps:
+
+          - task: TerraformTask@5
+            displayName: Terraform Init
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/dev'
+              backendServiceArm: 'abhi_azure_connection'
+              backendAzureRmOverrideSubscriptionID: 'cf72e154-d368-4a84-87cf-577efd0a8880'
+              backendAzureRmResourceGroupName: 'dev-backend'
+              backendAzureRmStorageAccountName: 'devstrgaks'
+              backendAzureRmContainerName: 'tfstate'
+              backendAzureRmKey: 'backend'
+
+          - task: TerraformTask@5
+            displayName: Terraform Destroy
+            inputs:
+              provider: 'azurerm'
+              command: 'destroy'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/dev'
+              environmentServiceNameAzureRM: 'abhi_azure_connection'
