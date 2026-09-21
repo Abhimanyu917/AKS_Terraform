@@ -1,6 +1,6 @@
 trigger: none
 pool:
-  vmImage: abhi_agent
+  name: abhi_agent
 
 stages:
   - stage: terraformvalidate
